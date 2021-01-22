@@ -1,0 +1,34 @@
+variable "cluster_identifier" {
+  type = string
+}
+
+variable "availability_zones" {
+  type = list(string)
+}
+
+variable "instance_class" {
+  type        = string
+  description = "The instance class"
+}
+
+variable "instance_count" {
+  type        = number
+  description = "The number of instances to add"
+}
+
+variable "database_name" {
+  type = string
+}
+
+variable "master_username" {
+  type = string
+}
+
+variable "master_password" {
+  type = string
+}
+
+variable "tags" {
+  type        = map(string)
+  description = "The list of AWS Tags to use when creating the resources"
+}
