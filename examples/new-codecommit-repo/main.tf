@@ -22,7 +22,7 @@ resource "random_string" "random" {
 }
 
 module "aws-codecommit-repo" {
-  source = "../../modules/aws-codecommit-repo"
+  source = "../../aws-codecommit-repo"
 
   repo_name = "aws-repo-${random_string.random.result}"
 }
