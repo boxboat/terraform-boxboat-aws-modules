@@ -27,7 +27,7 @@ module "aws-rds-aurora-mysql" {
 
   instance_count     = 2
   cluster_identifier = "my-aurora-rds-cluster"
-  availability_zones = ["us-west-2a", "us-west-2b", "us-west-2c"]
+  availability_zones = ["us-east-1a", "us-east-1b", "us-east-1c"]
   instance_class     = "db.r4.large"
   database_name      = "mydb"
   master_username    = "foo"
