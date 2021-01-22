@@ -23,7 +23,7 @@ provider "aws" {
 }
 
 module "codebuild_s3_bucket_pipeline" {	
-  source = "../../aws-s3"
+  source = "../../aws-bucket"
 
   bucket_name = "develop-example-pipeline-artifacts"	
   tags        = {}	
