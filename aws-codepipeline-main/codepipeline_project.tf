@@ -1,16 +1,9 @@
-module "codebuild_s3_bucket_pipeline" {
-  source = "../aws-bucket"
-
-  bucket_name = "${var.base_name}-pipeline-artifacts"
-  tags        = var.tags
-}
-
 resource "aws_codepipeline" "pipeline" {
   name     = "${var.base_name}-pipeline"
   role_arn = var.codepipeline_role_arn
 
   artifact_store {
-    location = module.codebuild_s3_bucket_pipeline.bucket_name
+    location = var.bucket_name
     type     = "S3"
   }
 

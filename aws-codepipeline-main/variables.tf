@@ -49,3 +49,7 @@ variable "enable_manual_inspection" {
   type        = bool
   description = "Enable the use of a CodePipeline stage that forces someone to look at the Terraform plan before applying"
 }
+
+variable "bucket_name" {
+  type = string
+}
