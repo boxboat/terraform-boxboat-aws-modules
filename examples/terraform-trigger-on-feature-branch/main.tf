@@ -40,9 +40,9 @@ module "aws-codebuild-pipeline-on-feature-branch" {
 
   tags = {}
 
-  codebuild_role_arn    = aws_iam_role.codebuild_role.arn
-  codecommit_repo_arn   = data.aws_codecommit_repository.feature_cicd_test_repo.arn
-  lambda_role_arn       = aws_iam_role.lambda_role.arn
+  codebuild_role_arn  = aws_iam_role.codebuild_role.arn
+  codecommit_repo_arn = data.aws_codecommit_repository.feature_cicd_test_repo.arn
+  lambda_role_arn     = aws_iam_role.lambda_role.arn
 
   lambda_runtime = "python3.8"
 

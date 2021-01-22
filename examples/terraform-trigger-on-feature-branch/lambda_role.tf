@@ -29,9 +29,9 @@ data "aws_iam_policy_document" "lambda_iam_policy_document" {
       "codebuild:StartBuild"
     ]
 
-    resources = ["*"]  
+    resources = ["*"]
   }
-  
+
 }
 
 resource "aws_iam_role_policy" "lambda_iam_policy" {

@@ -35,7 +35,7 @@ variable "codebuild_role_arn" {
 }
 
 variable "codecommit_repo_arn" {
-  type = string
+  type        = string
   description = "The AWS ARN of the repository that the Cloud Watch Event Rule will be monitoring for feature branch changes"
 }
 
@@ -45,6 +45,6 @@ variable "lambda_role_arn" {
 }
 
 variable "lambda_runtime" {
-  type = string
+  type        = string
   description = "Runtime for lambda function used"
 }
