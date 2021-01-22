@@ -22,6 +22,13 @@ provider "aws" {
   region  = var.region
 }
 
+module "codebuild_s3_bucket_pipeline" {	
+  source = "../../aws-s3"
+
+  bucket_name = "develop-example-pipeline-artifacts"	
+  tags        = {}	
+}
+
 module "aws-codebuild-pipeline-on-develop" {
   source = "../../aws-codepipeline-main"
 
