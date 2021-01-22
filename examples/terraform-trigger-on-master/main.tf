@@ -49,4 +49,6 @@ module "aws-codebuild-pipeline-on-master" {
   codepipeline_role_arn = aws_iam_role.master_codepipeline_role.arn
 
   enable_manual_inspection = true
+
+  bucket_name = module.codebuild_s3_bucket_pipeline.bucket_name
 }
