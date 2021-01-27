@@ -18,7 +18,7 @@ variable "instance_class" {
 
 variable "instance_count" {
   type        = number
-  description = "The number of instances to add"
+  description = "The number of database instances"
 }
 
 variable "database_name" {
@@ -36,4 +36,9 @@ variable "master_password" {
 variable "tags" {
   type        = map(string)
   description = "The list of AWS Tags to use when creating the resources"
+}
+
+variable "subnet_ids" {
+  type = list(string)
+  description = "The list of subnet IDs to use for the AWS Aurora cluster"
 }

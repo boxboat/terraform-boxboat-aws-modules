@@ -22,6 +22,27 @@ provider "aws" {
   region  = var.region
 }
 
+resource "random_pet" "vpc_name" {
+  keepers = {
+    # Generate a new pet name each time we switch to a new AMI id
+    example_name = "simple-rds-aurora"
+  }
+}
+
+resource "aws_vpc" "vpc" {
+  cidr_block = "10.0.0.0/16"
+}
+
+resource "aws_subnet" "subnet1" {
+  vpc_id     = aws_vpc.vpc.id
+  cidr_block = "10.0.1.0/24"
+}
+
+resource "aws_subnet" "subnet2" {
+  vpc_id     = aws_vpc.vpc.id
+  cidr_block = "10.0.1.0/24"
+}
+
 module "aws-rds-aurora-mysql" {
   source = "../../aws-rds-aurora"
 
@@ -35,4 +56,6 @@ module "aws-rds-aurora-mysql" {
   master_password    = "barbut8chars"
 
   tags = {}
+
+  subnet_ids = [aws_subnet.subnet1.id, aws_subnet.subnet2.id]
 }
