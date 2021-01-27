@@ -2,6 +2,11 @@ variable "cluster_identifier" {
   type = string
 }
 
+variable "engine" {
+  type        = string
+  description = "The AWS Aurora engine to use. For instance: aurora, aurora-mysql, aurora-postgresql"
+}
+
 variable "availability_zones" {
   type = list(string)
 }
