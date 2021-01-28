@@ -33,14 +33,22 @@ resource "aws_vpc" "vpc" {
   cidr_block = "10.0.0.0/16"
 }
 
-resource "aws_subnet" "subnet1" {
-  vpc_id     = aws_vpc.vpc.id
-  cidr_block = "10.0.1.0/24"
+data "aws_availability_zones" "azs" {
+  state = "available"
 }
 
-resource "aws_subnet" "subnet2" {
+locals {
+  zones = [for zone in data.aws_availability_zones.azs.zone_ids: zone]
+}
+
+# Subnets need at least two availability zones
+resource "aws_subnet" "db_subnets" {
+  count = 2
+
   vpc_id     = aws_vpc.vpc.id
-  cidr_block = "10.0.1.0/24"
+  cidr_block = cidrsubnets("10.0.0.0/16",8,8)[count.index]
+
+  availability_zone_id = local.zones[count.index]
 }
 
 module "aws-rds-aurora-mysql" {
@@ -49,7 +57,7 @@ module "aws-rds-aurora-mysql" {
   instance_count     = 2
   engine             = "aurora-mysql"
   cluster_identifier = "my-aurora-rds-cluster"
-  availability_zones = ["us-east-1a", "us-east-1b", "us-east-1c"]
+  availability_zones = aws_subnet.db_subnets[*].availability_zone
   instance_class     = "db.t3.small"
   database_name      = "mydb"
   master_username    = "foo"
@@ -57,5 +65,5 @@ module "aws-rds-aurora-mysql" {
 
   tags = {}
 
-  subnet_ids = [aws_subnet.subnet1.id, aws_subnet.subnet2.id]
+  subnet_ids = aws_subnet.db_subnets[*].id
 }
