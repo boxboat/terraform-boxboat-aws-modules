@@ -56,6 +56,7 @@ module "aws-rds-aurora-mysql" {
 
   instance_count     = 2
   engine             = "aurora-mysql"
+  parameter_group_family = "aurora-mysql5.7"
   cluster_identifier = "my-aurora-rds-cluster"
   availability_zones = aws_subnet.db_subnets[*].availability_zone
   instance_class     = "db.t3.small"

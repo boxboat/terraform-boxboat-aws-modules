@@ -80,3 +80,8 @@ variable "rds_proxy" {
     error_message = "`rds_proxy.role_arn` is required when `rds_proxy.enable` is true."
   }
 }
+
+variable "parameter_group_family" {
+  type = string
+  description = "The RDS parameter group to use. For example: aurora-mysql5.7"
+}
