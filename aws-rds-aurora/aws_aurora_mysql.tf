@@ -26,5 +26,9 @@ resource "aws_rds_cluster" "cluster" {
   //backups are enabled by default
   backup_retention_period = var.backup_retention_period
 
+  //Backtracking window is disabled by default. 
+  //Changing the backtrack window to greater than 0 enables the feature.
+  backtrack_window = var.backtrack_window
+
   db_subnet_group_name = aws_db_subnet_group.subnet_group.id
 }

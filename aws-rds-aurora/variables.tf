@@ -45,11 +45,22 @@ variable "subnet_ids" {
 
 variable "backup_retention_period" {
   type = number
-  description = "The AWS Aurora RDS backup retention period."
+  description = "The AWS Aurora RDS backup retention period in days. Cannot be disabled."
   default = 1
 
   validation {
     condition     = var.backup_retention_period > 0
     error_message = "Please don't disable the automated backups. Define a backup retention period greater than 0."
+  }
+}
+
+variable "backtrack_window" {
+  type = number
+  description = "The AWS Aurora RDS backtrack window in seconds. Cannot be disabled. Defaults to 30 minutes."
+  default = 1800
+
+  validation {
+    condition     = var.backtrack_window > 0 && var.backtrack_window < 259200
+    error_message = "Please don't disable the backtrack window. Define a backtrack windows must be greater than 0 and less than 72 hours (259200 seconds)."
   }
 }
