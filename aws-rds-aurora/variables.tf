@@ -64,3 +64,19 @@ variable "backtrack_window" {
     error_message = "Please don't disable the backtrack window. Define a backtrack windows must be greater than 0 and less than 72 hours (259200 seconds)."
   }
 }
+
+variable "rds_proxy" {
+  type = any
+
+  default = { enable: false }
+
+  description = "In preview. Working in Progress."
+
+  validation {
+    condition = (
+      (can(var.rds_proxy.enable) && !var.rds_proxy.enable) ||
+      (can(var.rds_proxy.enable) && var.rds_proxy.enable && can(var.rds_proxy.role_arn))
+    )
+    error_message = "`rds_proxy.role_arn` is required when `rds_proxy.enable` is true."
+  }
+}
