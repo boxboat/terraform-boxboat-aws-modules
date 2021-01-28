@@ -42,3 +42,14 @@ variable "subnet_ids" {
   type = list(string)
   description = "The list of subnet IDs to use for the AWS Aurora cluster"
 }
+
+variable "backup_retention_period" {
+  type = number
+  description = "The AWS Aurora RDS backup retention period."
+  default = 1
+
+  validation {
+    condition     = var.backup_retention_period > 0
+    error_message = "Please don't disable the automated backups. Define a backup retention period greater than 0."
+  }
+}

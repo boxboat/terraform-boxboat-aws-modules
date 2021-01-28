@@ -8,6 +8,9 @@ resource "aws_rds_cluster_instance" "cluster_instances" {
  
   publicly_accessible  = false
   db_subnet_group_name = aws_db_subnet_group.subnet_group.id
+
+  auto_minor_version_upgrade = true
+
 }
 
 resource "aws_rds_cluster" "cluster" {
@@ -19,6 +22,9 @@ resource "aws_rds_cluster" "cluster" {
   master_password    = var.master_password
 
   skip_final_snapshot = true
+
+  //backups are enabled by default
+  backup_retention_period = var.backup_retention_period
 
   db_subnet_group_name = aws_db_subnet_group.subnet_group.id
 }
