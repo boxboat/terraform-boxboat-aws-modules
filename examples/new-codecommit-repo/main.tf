@@ -5,6 +5,12 @@ terraform {
       version = "~> 2.70"
     }
   }
+
+  backend "s3" {
+    bucket = "terraform-states-examples"
+    region = "us-east-1"
+    key    = "examples/new-codecommit-repo/tf.state"
+  }
 }
 
 variable "region" {

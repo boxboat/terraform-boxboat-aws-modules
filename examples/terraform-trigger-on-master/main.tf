@@ -7,7 +7,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket = "facundo-trigger-on-master-backend"
+    bucket = "terraform-states-examples"
     region = "us-east-1"
     key    = "examples/facundo-trigger-on-master/tf.state"
   }
