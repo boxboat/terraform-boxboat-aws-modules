@@ -22,6 +22,9 @@ resource "aws_rds_cluster" "cluster" {
   master_username    = var.master_username
   master_password    = var.master_password
 
+  //storage is always encrypted
+  storage_encrypted = true
+
   skip_final_snapshot = true
 
   //backups are enabled by default
