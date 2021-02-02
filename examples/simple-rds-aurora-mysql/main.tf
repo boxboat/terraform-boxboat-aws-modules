@@ -43,10 +43,10 @@ locals {
 
 # Subnets need at least two availability zones
 resource "aws_subnet" "db_subnets" {
-  count = 2
+  count = 3
 
   vpc_id     = aws_vpc.vpc.id
-  cidr_block = cidrsubnets("10.0.0.0/16",8,8)[count.index]
+  cidr_block = cidrsubnets("10.0.0.0/16",8,8,8)[count.index]
 
   availability_zone_id = local.zones[count.index]
 }

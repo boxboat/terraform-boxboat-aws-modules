@@ -41,6 +41,11 @@ variable "tags" {
 variable "subnet_ids" {
   type = list(string)
   description = "The list of subnet IDs to use for the AWS Aurora cluster"
+
+  validation {
+    condition     = length(var.subnet_ids) >= 3
+    error_message = "AWS RDS Aurora needs at least 3 availability zones and therefore subnets for each zone."
+  }
 }
 
 variable "backup_retention_period" {
@@ -56,8 +61,8 @@ variable "backup_retention_period" {
 
 variable "backtrack_window" {
   type = number
-  description = "The AWS Aurora RDS backtrack window in seconds. Cannot be disabled. Defaults to 30 minutes."
-  default = 1800
+  description = "The AWS Aurora RDS backtrack window in seconds. Cannot be disabled. Defaults to 24 hours."
+  default = 86400
 
   validation {
     condition     = var.backtrack_window > 0 && var.backtrack_window < 259200
@@ -90,4 +95,9 @@ variable "enable_iam_auth" {
   type = bool
   default = false
   description = "Enable the IAM authentication through RDS Proxy. Only in use when `rds_proxy.enable` is `true`."
+}
+
+variable "security_group_ids" {
+  type = list(string)
+  description = "The IDs of the security groups to associate to the RDS cluster"
 }
