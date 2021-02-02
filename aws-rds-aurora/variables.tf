@@ -7,6 +7,14 @@ variable "engine" {
   description = "The AWS Aurora engine to use. For instance: aurora, aurora-mysql, aurora-postgresql"
 }
 
+variable "engine_version" {
+  type = string
+  description = <<EOF
+  The AWS database engine version to use.
+  You can use `aws rds describe-db-engine-versions --query "DBEngineVersions[].ValidUpgradeTarget[?Engine=='aurora-postgresql'].EngineVersion"` to get a list
+EOF
+}
+
 variable "availability_zones" {
   type = list(string)
 }
@@ -61,12 +69,12 @@ variable "backup_retention_period" {
 
 variable "backtrack_window" {
   type = number
-  description = "The AWS Aurora RDS backtrack window in seconds. Cannot be disabled. Defaults to 24 hours."
-  default = 86400
+  description = "The AWS Aurora RDS backtrack window in seconds. Defaults to 0 seconds."
+  default = 0
 
   validation {
-    condition     = var.backtrack_window > 0 && var.backtrack_window < 259200
-    error_message = "Please don't disable the backtrack window. Define a backtrack windows must be greater than 0 and less than 72 hours (259200 seconds)."
+    condition     = var.backtrack_window >= 0 && var.backtrack_window < 259200
+    error_message = "For MySQL, a backtrack window must be greater than 0 and less than 72 hours (259200 seconds)."
   }
 }
 
@@ -88,7 +96,10 @@ variable "rds_proxy" {
 
 variable "parameter_group_family" {
   type = string
-  description = "The RDS parameter group to use. For example: aurora-mysql5.7"
+  description = <<EOF
+  The RDS parameter group to use. For example: aurora-mysql5.7
+  You can use `aws rds describe-db-engine-versions --query "DBEngineVersions[].DBParameterGroupFamily"` to get a list.
+EOF
 }
 
 variable "enable_iam_auth" {

@@ -16,6 +16,7 @@ resource "aws_rds_cluster_instance" "cluster_instances" {
 
 resource "aws_rds_cluster" "cluster" {
   engine             = var.engine
+  engine_version     = var.engine_version
   cluster_identifier = var.cluster_identifier
   availability_zones = var.availability_zones
   database_name      = var.database_name
