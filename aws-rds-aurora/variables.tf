@@ -75,13 +75,19 @@ variable "rds_proxy" {
   validation {
     condition = (
       (can(var.rds_proxy.enable) && !var.rds_proxy.enable) ||
-      (can(var.rds_proxy.enable) && var.rds_proxy.enable && can(var.rds_proxy.role_arn))
+      (can(var.rds_proxy.enable) && var.rds_proxy.enable && can(var.rds_proxy.role_arn) && can(var.rds_proxy.secret_arn))
     )
-    error_message = "`rds_proxy.role_arn` is required when `rds_proxy.enable` is true."
+    error_message = "`rds_proxy.role_arn` and `rds_proxy.secret_arn` are required when `rds_proxy.enable` is true."
   }
 }
 
 variable "parameter_group_family" {
   type = string
   description = "The RDS parameter group to use. For example: aurora-mysql5.7"
+}
+
+variable "enable_iam_auth" {
+  type = bool
+  default = false
+  description = "Enable the IAM authentication through RDS Proxy. Only in use when `rds_proxy.enable` is `true`."
 }

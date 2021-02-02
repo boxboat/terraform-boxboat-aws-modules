@@ -8,6 +8,9 @@ resource "aws_db_proxy" "rds_proxy" {
   count = var.rds_proxy.enable? "1" : "0"
 
   auth {
+    auth_scheme = "SECRETS"
+    iam_auth    = var.enable_iam_auth? "REQUIRED": "DISABLED"
+    secret_arn  = var.rds_proxy.secret_arn
   }
 }
 
