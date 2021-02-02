@@ -47,4 +47,13 @@ resource "aws_db_parameter_group" "rds_instance_parameter_group" {
       apply_method = "immediate" # apply type is dynamic
     }
   }
+
+  dynamic "parameter" {
+    for_each = local.is_postgres_bit
+    content {
+      name  = "log_min_messages"
+      value = "warning"
+      apply_method = "immediate" # apply type is dynamic
+    }
+  }
 }
