@@ -6,8 +6,8 @@ resource "aws_db_parameter_group" "rds_instance_parameter_group" {
   dynamic "parameter" {
     for_each = local.is_mysql_bit
     content {
-      name  = "local_infile" 
-      value = "0"
+      name         = "local_infile"
+      value        = "0"
       apply_method = "immediate" # apply type is dynamic
     }
   }
@@ -15,8 +15,8 @@ resource "aws_db_parameter_group" "rds_instance_parameter_group" {
   dynamic "parameter" {
     for_each = local.is_postgres_bit
     content {
-      name  = "log_connections"
-      value = "on"
+      name         = "log_connections"
+      value        = "on"
       apply_method = "immediate" # apply type is dynamic
     }
   }
@@ -24,8 +24,8 @@ resource "aws_db_parameter_group" "rds_instance_parameter_group" {
   dynamic "parameter" {
     for_each = local.is_postgres_bit
     content {
-      name  = "log_disconnections"
-      value = "on"
+      name         = "log_disconnections"
+      value        = "on"
       apply_method = "immediate" # apply type is dynamic
     }
   }
@@ -33,8 +33,8 @@ resource "aws_db_parameter_group" "rds_instance_parameter_group" {
   dynamic "parameter" {
     for_each = local.is_postgres_bit
     content {
-      name  = "log_temp_files"
-      value = "0"
+      name         = "log_temp_files"
+      value        = "0"
       apply_method = "immediate" # apply type is dynamic
     }
   }
@@ -42,8 +42,8 @@ resource "aws_db_parameter_group" "rds_instance_parameter_group" {
   dynamic "parameter" {
     for_each = local.is_postgres_bit
     content {
-      name  = "log_min_duration_statement"
-      value = "-1"
+      name         = "log_min_duration_statement"
+      value        = "-1"
       apply_method = "immediate" # apply type is dynamic
     }
   }
@@ -51,8 +51,8 @@ resource "aws_db_parameter_group" "rds_instance_parameter_group" {
   dynamic "parameter" {
     for_each = local.is_postgres_bit
     content {
-      name  = "log_min_messages"
-      value = "warning"
+      name         = "log_min_messages"
+      value        = "warning"
       apply_method = "immediate" # apply type is dynamic
     }
   }

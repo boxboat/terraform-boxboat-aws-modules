@@ -27,22 +27,22 @@ data "aws_availability_zones" "azs" {
 }
 
 locals {
-  zones = [for zone in data.aws_availability_zones.azs.zone_ids: zone]
+  zones = [for zone in data.aws_availability_zones.azs.zone_ids : zone]
 }
 
 module "aws-rds-aurora-mysql" {
   source = "../../aws-rds-aurora"
 
-  instance_count     = 2
-  engine             = "aurora-mysql"
-  engine_version = "5.7.mysql_aurora.2.07.2"
+  instance_count         = 2
+  engine                 = "aurora-mysql"
+  engine_version         = "5.7.mysql_aurora.2.07.2"
   parameter_group_family = "aurora-mysql5.7"
-  cluster_identifier = "simple-mysql-cluster"
-  availability_zones = aws_subnet.db_subnets[*].availability_zone
-  instance_class     = "db.t3.small"
-  database_name      = "simplemysql"
-  master_username    = "foo"
-  master_password    = var.admin_password
+  cluster_identifier     = "simple-mysql-cluster"
+  availability_zones     = aws_subnet.db_subnets[*].availability_zone
+  instance_class         = "db.t3.small"
+  database_name          = "simplemysql"
+  master_username        = "foo"
+  master_password        = var.admin_password
 
   security_group_ids = [aws_security_group.allow_mysql.id]
 

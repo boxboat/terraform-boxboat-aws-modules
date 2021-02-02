@@ -27,22 +27,22 @@ data "aws_availability_zones" "azs" {
 }
 
 locals {
-  zones = [for zone in data.aws_availability_zones.azs.zone_ids: zone]
+  zones = [for zone in data.aws_availability_zones.azs.zone_ids : zone]
 }
 
 module "aws-rds-aurora-postgres" {
   source = "../../aws-rds-aurora"
 
-  instance_count     = 2
-  engine             = "aurora-postgresql"
-  engine_version = "12.4"
+  instance_count         = 2
+  engine                 = "aurora-postgresql"
+  engine_version         = "12.4"
   parameter_group_family = "aurora-postgresql12"
-  cluster_identifier = "simple-postgres-cluster"
-  availability_zones = aws_subnet.db_subnets[*].availability_zone
-  instance_class     = "db.t3.medium"
-  database_name      = "simplepostgres"
-  master_username    = "foo"
-  master_password    = var.admin_password
+  cluster_identifier     = "simple-postgres-cluster"
+  availability_zones     = aws_subnet.db_subnets[*].availability_zone
+  instance_class         = "db.t3.medium"
+  database_name          = "simplepostgres"
+  master_username        = "foo"
+  master_password        = var.admin_password
 
   security_group_ids = [aws_security_group.allow_postgres.id]
 

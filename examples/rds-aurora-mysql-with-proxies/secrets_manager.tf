@@ -8,7 +8,7 @@ resource "aws_secretsmanager_secret_version" "db_password_version" {
 
   lifecycle {
     ignore_changes = [
-        secret_string
+      secret_string
     ]
   }
 }
