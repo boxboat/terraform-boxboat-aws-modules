@@ -9,7 +9,7 @@ terraform {
   backend "s3" {
     bucket = "terraform-states-examples"
     region = "us-east-1"
-    key    = "examples/simple-rds-aurora/tf.state"
+    key    = "examples/simple-rds-aurora-postgres/tf.state"
   }
 }
 
@@ -30,21 +30,21 @@ locals {
   zones = [for zone in data.aws_availability_zones.azs.zone_ids : zone]
 }
 
-module "aws-rds-aurora-mysql" {
+module "aws-rds-aurora-postgres" {
   source = "../../aws-rds-aurora"
 
   instance_count         = 2
-  engine                 = "aurora-mysql"
-  engine_version         = "5.7.mysql_aurora.2.07.2"
-  parameter_group_family = "aurora-mysql5.7"
-  cluster_identifier     = "simple-mysql-cluster"
+  engine                 = "aurora-postgresql"
+  engine_version         = "12.4"
+  parameter_group_family = "aurora-postgresql12"
+  cluster_identifier     = "simple-postgres-cluster"
   availability_zones     = aws_subnet.db_subnets[*].availability_zone
-  instance_class         = "db.t3.small"
-  database_name          = "simplemysql"
+  instance_class         = "db.t3.medium"
+  database_name          = "simplepostgres"
   master_username        = "foo"
   master_password        = var.admin_password
 
-  security_group_ids = [aws_security_group.allow_mysql.id]
+  security_group_ids = [aws_security_group.allow_postgres.id]
 
   tags = {}
 

@@ -7,6 +7,14 @@ variable "engine" {
   description = "The AWS Aurora engine to use. For instance: aurora, aurora-mysql, aurora-postgresql"
 }
 
+variable "engine_version" {
+  type        = string
+  description = <<EOF
+  The AWS database engine version to use.
+  You can use `aws rds describe-db-engine-versions --query "DBEngineVersions[].ValidUpgradeTarget[?Engine=='aurora-postgresql'].EngineVersion"` to get a list
+EOF
+}
+
 variable "availability_zones" {
   type = list(string)
 }
@@ -39,14 +47,19 @@ variable "tags" {
 }
 
 variable "subnet_ids" {
-  type = list(string)
+  type        = list(string)
   description = "The list of subnet IDs to use for the AWS Aurora cluster"
+
+  validation {
+    condition     = length(var.subnet_ids) >= 3
+    error_message = "AWS RDS Aurora needs at least 3 availability zones and therefore subnets for each zone."
+  }
 }
 
 variable "backup_retention_period" {
-  type = number
+  type        = number
   description = "The AWS Aurora RDS backup retention period in days. Cannot be disabled."
-  default = 1
+  default     = 1
 
   validation {
     condition     = var.backup_retention_period > 0
@@ -55,33 +68,47 @@ variable "backup_retention_period" {
 }
 
 variable "backtrack_window" {
-  type = number
-  description = "The AWS Aurora RDS backtrack window in seconds. Cannot be disabled. Defaults to 30 minutes."
-  default = 1800
+  type        = number
+  description = "The AWS Aurora RDS backtrack window in seconds. Defaults to 0 seconds."
+  default     = 0
 
   validation {
-    condition     = var.backtrack_window > 0 && var.backtrack_window < 259200
-    error_message = "Please don't disable the backtrack window. Define a backtrack windows must be greater than 0 and less than 72 hours (259200 seconds)."
+    condition     = var.backtrack_window >= 0 && var.backtrack_window < 259200
+    error_message = "For MySQL, a backtrack window must be greater than 0 and less than 72 hours (259200 seconds)."
   }
 }
 
 variable "rds_proxy" {
   type = any
 
-  default = { enable: false }
+  default = { enable : false }
 
   description = "In preview. Working in Progress."
 
   validation {
     condition = (
-      (can(var.rds_proxy.enable) && !var.rds_proxy.enable) ||
-      (can(var.rds_proxy.enable) && var.rds_proxy.enable && can(var.rds_proxy.role_arn))
+      (can(var.rds_proxy.enable) && ! var.rds_proxy.enable) ||
+      (can(var.rds_proxy.enable) && var.rds_proxy.enable && can(var.rds_proxy.role_arn) && can(var.rds_proxy.secret_arn))
     )
-    error_message = "`rds_proxy.role_arn` is required when `rds_proxy.enable` is true."
+    error_message = "`rds_proxy.role_arn` and `rds_proxy.secret_arn` are required when `rds_proxy.enable` is true."
   }
 }
 
 variable "parameter_group_family" {
-  type = string
-  description = "The RDS parameter group to use. For example: aurora-mysql5.7"
+  type        = string
+  description = <<EOF
+  The RDS parameter group to use. For example: aurora-mysql5.7
+  You can use `aws rds describe-db-engine-versions --query "DBEngineVersions[].DBParameterGroupFamily"` to get a list.
+EOF
+}
+
+variable "enable_iam_auth" {
+  type        = bool
+  default     = false
+  description = "Enable the IAM authentication through RDS Proxy. Only in use when `rds_proxy.enable` is `true`."
+}
+
+variable "security_group_ids" {
+  type        = list(string)
+  description = "The IDs of the security groups to associate to the RDS cluster"
 }
