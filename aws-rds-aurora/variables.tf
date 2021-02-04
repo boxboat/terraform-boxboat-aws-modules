@@ -112,3 +112,9 @@ variable "security_group_ids" {
   type        = list(string)
   description = "The IDs of the security groups to associate to the RDS cluster"
 }
+
+variable "parameter_groups" {
+  type = list(any)
+  default = []
+  description = "The list of additional parameter groups to pass in."
+}
