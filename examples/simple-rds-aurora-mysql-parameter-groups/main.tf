@@ -52,13 +52,13 @@ module "aws-rds-aurora-mysql" {
 
   parameter_groups = [
     {
-      name = "slow_query_log",
-      value = 1,
+      name         = "slow_query_log",
+      value        = 1,
       apply_method = "immediate"
     },
     {
-      name = "long_query_time",
-      value = 0.1,
+      name         = "long_query_time",
+      value        = 0.1,
       apply_method = "immediate"
     }
   ]
