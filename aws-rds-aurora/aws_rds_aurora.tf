@@ -26,8 +26,8 @@ resource "aws_cloudformation_stack" "cluster" {
     cluster_identifier = var.cluster_identifier
     database_name = var.database_name
     master_username = var.master_username
-    master_password_secret_arn = aws_secretsmanager_secret_version.secret_version.arn
-    master_password_secret_version_id = aws_secretsmanager_secret_version.secret_version.version_id
+    master_password_secret_arn = var.master_password_secret_arn
+    master_password_secret_version_id = var.master_password_secret_version_id
     backup_retention_period = var.backup_retention_period
     db_subnet_group_name = aws_db_subnet_group.subnet_group.id
     vpc_security_group_ids = "[${join(", ", var.security_group_ids)}]"
