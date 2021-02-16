@@ -1,5 +1,8 @@
+resource "random_id" "uuid" {
+    byte_length = 1
+}
 resource "aws_secretsmanager_secret" "secret" {
-  name = "${var.cluster_identifier}-master-password"
+  name = "${var.cluster_identifier}-master-password-${random_id.uuid.dec}"
 }
 
 resource "aws_secretsmanager_secret_version" "secret_version" {
