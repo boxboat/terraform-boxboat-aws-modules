@@ -50,3 +50,11 @@ module "aws-rds-aurora-mysql" {
 
   subnet_ids = aws_subnet.db_subnets[*].id
 }
+
+output "cf_id" {
+  value = module.aws-rds-aurora-mysql.cf_id
+}
+
+output "cf_outputs" {
+  value = module.aws-rds-aurora-mysql.cf_outputs
+}
