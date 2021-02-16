@@ -31,32 +31,14 @@ locals {
   cluster_identifier = "simple-mysql-cluster"
 }
 
-resource "null_resource" "create_password" {
-  provisioner "local-exec" {
-    command = "aws secretsmanager get-random-password --exclude-punctuation --password-length 16 --query RandomPassword --output text > ${data.template_file.generated_password.rendered}"
-  }
-}
-
-data "template_file" "generated_password" {
-  template = "${path.module}/generated_password.txt"
-}
-
-data "local_file" "generated_password" {
-  filename = data.template_file.generated_password.rendered
-  depends_on = [ null_resource.create_password ]
-}
-
-resource "random_id" "uuid" {
+resource "random_id" "random_id" {
   byte_length = 1
 }
 
-resource "aws_secretsmanager_secret" "secret" {
-  name = "${local.cluster_identifier}-master-password-${random_id.uuid.dec}"
-}
+module "aws_generated_password" {
+  source = "../../aws-seeded-random-password"
 
-resource "aws_secretsmanager_secret_version" "secret_version" {
-  secret_id = aws_secretsmanager_secret.secret.id
-  secret_string = chomp(data.local_file.generated_password.content)
+  secret_name = "${local.cluster_identifier}-master-password-${random_id.random_id.dec}"
 }
 
 module "aws-rds-aurora-mysql" {
@@ -71,8 +53,8 @@ module "aws-rds-aurora-mysql" {
   instance_class         = "db.t3.small"
   database_name          = "simplemysql"
   master_username        = "foo"
-  master_password_secret_arn = aws_secretsmanager_secret_version.secret_version.arn
-  master_password_secret_version_id = aws_secretsmanager_secret_version.secret_version.version_id
+  master_password_secret_arn = module.aws_generated_password.secret_arn
+  master_password_secret_version_id = module.aws_generated_password.secret_version_id
 
   security_group_ids = [aws_security_group.allow_mysql.id]
 
