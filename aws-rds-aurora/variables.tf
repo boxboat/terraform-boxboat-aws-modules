@@ -37,10 +37,6 @@ variable "master_username" {
   type = string
 }
 
-variable "master_password" {
-  type = string
-}
-
 variable "tags" {
   type        = map(string)
   description = "The list of AWS Tags to use when creating the resources"
@@ -87,7 +83,7 @@ variable "rds_proxy" {
 
   validation {
     condition = (
-      (can(var.rds_proxy.enable) && ! var.rds_proxy.enable) ||
+      (can(var.rds_proxy.enable) && !var.rds_proxy.enable) ||
       (can(var.rds_proxy.enable) && var.rds_proxy.enable && can(var.rds_proxy.role_arn) && can(var.rds_proxy.secret_arn))
     )
     error_message = "`rds_proxy.role_arn` and `rds_proxy.secret_arn` are required when `rds_proxy.enable` is true."
@@ -114,7 +110,17 @@ variable "security_group_ids" {
 }
 
 variable "parameter_groups" {
-  type = list(any)
-  default = []
+  type        = list(any)
+  default     = []
   description = "The list of additional parameter groups to pass in."
+}
+
+variable "master_password_secret_arn" {
+  type        = string
+  description = "The ARN of the secret to use for the RDS cluster"
+}
+
+variable "master_password_secret_version_id" {
+  type        = string
+  description = "The version id holding the master password to use for the RDS cluster"
 }

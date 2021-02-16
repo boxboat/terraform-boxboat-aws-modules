@@ -18,9 +18,11 @@ resource "aws_db_proxy" "rds_proxy" {
 resource "aws_db_proxy_target" "rds_proxy_target" {
   count = var.rds_proxy.enable ? "1" : "0"
 
-  db_cluster_identifier = aws_rds_cluster.cluster.id
+  db_cluster_identifier = var.cluster_identifier
   db_proxy_name         = aws_db_proxy.rds_proxy[0].name
   target_group_name     = "default"
+
+  depends_on = [aws_cloudformation_stack.cluster]
 }
 
 resource "aws_db_proxy_default_target_group" "rds_proxy_target_group" {

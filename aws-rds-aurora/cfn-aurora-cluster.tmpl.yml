@@ -1,0 +1,18 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A Cloud Formation template for deploying an RDS Aurora cluster to avoid storing the master password in the Terraform state.
+Resources:
+  RDSCluster:
+    Type: AWS::RDS::DBCluster
+    Properties: 
+      AvailabilityZones: ${availability_zones}
+      BacktrackWindow: ${backtrack_window}
+      BackupRetentionPeriod: ${backup_retention_period}
+      DatabaseName: '${database_name}'
+      DBClusterIdentifier: '${cluster_identifier}'
+      DBSubnetGroupName: ${db_subnet_group_name}
+      Engine: '${engine}'
+      EngineVersion: '${engine_version}'
+      MasterUsername: '${master_username}'
+      MasterUserPassword: '{{resolve:secretsmanager:${master_password_secret_arn}:SecretString:::${master_password_secret_version_id}}}'
+      StorageEncrypted: true
+      VpcSecurityGroupIds: ${vpc_security_group_ids}
